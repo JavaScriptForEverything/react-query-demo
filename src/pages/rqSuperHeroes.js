@@ -1,18 +1,13 @@
-import axios from 'axios'
-import { useQuery } from 'react-query'
+import { useSuperheores } from '../hooks'
 import Layout from '../layout'
 
-const getSuperHeroes = async() => axios.get('http://localhost:5000/superheroes')
 	
 const RQSuperHeroesPage = () => { 
 
+	const onSuccess = (data) => console.log(data)
+	const onError = (error) => console.log(error)
 
-	const { isLoading, data: superheroes, isError, error } = useQuery('superheroes-key', getSuperHeroes, {
-		select: (data) => {
-			const superheroes = data?.data.map(superhero => superhero.name)
-			return superheroes
-		}
-	})
+	const { isLoading, data: superheroes, isError, error } = useSuperheores({ onSuccess, onError })
 
 	if(isLoading) return <Layout> <p>Loading...</p> </Layout>
 	if(isError) return <Layout> <p>{error.message}</p> </Layout>

@@ -123,5 +123,67 @@ const RQSuperHeroesPage = () => {
 	)
 }
 export default RQSuperHeroesPage
+```
 
+
+
+##### Custom Hooks
+Why we need custom hooks ?
+	- When we need same logic in multiple page we can use custom hook instead of duplicating code.
+	- Creating Custom hooks for the `Data Transformation` Example
+
+###### /pages/rqSuperHeroes.js
+```
+import { useSuperheores } from '../hooks'
+import Layout from '../layout'
+	
+const RQSuperHeroesPage = () => { 
+
+	const onSuccess = (data) => console.log(data)
+	const onError = (error) => console.log(error)
+
+	const { isLoading, data: superheroes, isError, error } = useSuperheores({ onSuccess, onError })
+
+	if(isLoading) return <Layout> <p>Loading...</p> </Layout>
+	if(isError) return <Layout> <p>{error.message}</p> </Layout>
+
+	return (
+		<Layout>
+			<p>React Query Superheroes</p>
+
+			<ul>
+				{superheroes.map(superhero => <li key={superhero}>{superhero}</li>)}
+			</ul>
+
+			<pre>
+				{JSON.stringify(superheroes, null, 2)}
+			</pre>
+		</Layout>
+	)
+}
+export default RQSuperHeroesPage
+```
+
+###### /hooks/index.js
+```
+export * from './useSuperheroes'
+```
+
+###### /hooks/useSuperheroes.js
+```
+import axios from 'axios'
+import { useQuery } from 'react-query'
+
+const getSuperHeroes = async() => axios.get('http://localhost:5000/superheroes')
+
+export const useSuperheores = ({ onSuccess, onError }) => {
+	return useQuery('superheroes-key', getSuperHeroes, {
+		onSuccess,
+		onError,
+		select: (data) => {
+			const superheroes = data?.data.map(superhero => superhero.name)
+			return superheroes
+		}
+	})
+}
 ```
