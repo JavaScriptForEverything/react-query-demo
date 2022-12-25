@@ -1,16 +1,12 @@
 # Understanding React-Query
 
-
-<div style="display: flex; justify-content: center;" >
-	<div style="color: #ff4154" >
-		<h2>React-Query</h2>
-		<img
-			width="200px"
-			src="https://github.com/JavaScriptForEverything/react-query-demo/blob/master/public/react-query.svg"
-			alt="/public/react-query.svg"
-		/>
-	</div>
-</div>
+<p align="center">
+	<img
+		width="200px"
+		src="https://github.com/JavaScriptForEverything/react-query-demo/blob/master/public/react-query.svg"
+		alt="/public/react-query.svg"
+	/>
+</p>
 
 
 
