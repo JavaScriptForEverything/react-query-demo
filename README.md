@@ -1,5 +1,14 @@
 # Understanding React-Query
 
+
+<img
+	src="https://github.com/JavaScriptForEverything/react-query-demo/blob/master/public/react-query.svg"
+>
+
+
+
+
+
 Why we prefare `React-Query` over taditional `fetch` or `axios` library ?
 	- Because only `fetch` or `axios` allow to fetch data, but `react-query` allows
 	additional features like:
@@ -7,6 +16,24 @@ Why we prefare `React-Query` over taditional `fetch` or `axios` library ?
 		. Memory Cache
 		. Custom Hook (reduce so many boiler code)
 		. ...
+
+#### How to use this project:
+	. clone the repo: `git clone https://github.com/JavaScriptForEverything/react-query-demo`
+	. start server in one terminal and client in other terminal
+
+```
+$ git clone https://github.com/JavaScriptForEverything/react-query-demo
+
+$ cd react-query-demo
+$ yarn install
+$ yarn server 				: terminal-1: for server on localhost:5000
+$ yarn start 				: terminal-2: for client on localhost:3000
+```
+
+#### How to read (any) project:
+	. go to  `https://github.com/JavaScriptForEverything/react-query-demo`
+	. click on `n commits` link on top right of the file explorer
+	. go very end of lists, (first commit is the last item in explorer, or `$ git log --oneline`)
 
 
 ##### Fetching Data 
