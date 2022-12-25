@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const client = new QueryClient()
 
@@ -16,6 +17,10 @@ root.render(
 			<BrowserRouter>
 				<App />
 			</BrowserRouter>
+			<ReactQueryDevtools 
+				initialIsOpen={false} 
+				position='bottom-right'
+			/>
 		</QueryClientProvider>
   </React.StrictMode>
 );
