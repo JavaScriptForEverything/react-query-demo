@@ -1,16 +1,16 @@
 import { Route, Routes } from 'react-router-dom'
-import HomePage from './pages/home'
-import RQSuperHeroesPage from './pages/rqSuperHeroes'
-import SuperHeroesPage from './pages/superHeroes'
+
+import { Home, Superheroes, RQSuperheroes, RQSuperhero } from './pages'
 
 const App = () => {
 
 	return (
 		<>
 			<Routes>
-				<Route path='/' element={<HomePage />} />
-				<Route path='/superheroes' element={<SuperHeroesPage />} />
-				<Route path='/rq-superheroes' element={<RQSuperHeroesPage />} />
+				<Route path='/' element={<Home />} />
+				<Route path='/superheroes' element={<Superheroes />} />
+				<Route path='/rq-superheroes' element={<RQSuperheroes />} />
+				<Route path='/rq-superheroes/:heroId' element={<RQSuperhero />} />
 			</Routes>
 		</>
 	)

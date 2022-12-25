@@ -8,7 +8,7 @@ export const useSuperheores = ({ onSuccess, onError }) => {
 		onSuccess,
 		onError,
 		select: (data) => {
-			const superheroes = data?.data.map(superhero => superhero.name)
+			const superheroes = data?.data.map(superhero => superhero )
 			return superheroes
 		}
 	})

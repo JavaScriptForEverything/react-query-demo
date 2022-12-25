@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import Layout from '../layout'
 
-const SuperHeroesPage = () => {
+export const Superheroes = () => {
 	const [ superheroes, setSuperheroes ] = useState([])
 	const [ loading, setLoading ] = useState(false)
 	const [ error, setError ] = useState('')
@@ -42,4 +42,3 @@ const SuperHeroesPage = () => {
 		</Layout>
 	)
 }
-export default SuperHeroesPage

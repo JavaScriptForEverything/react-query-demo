@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 
 const pages = [
 	{ path: '/', label: 'Home' },
-	{ path: '/superheroes', label: 'SuperHeroes' },
-	{ path: '/rq-superheroes', label: 'RQ-SuperHeroes' },
+	{ path: '/superheroes', label: 'Superheroes' },
+	{ path: '/rq-superheroes', label: 'RQSuperheroes' },
+	// { path: `/rq-superheroes/heroId`, label: 'RQSuperhero' },
 ]
 
 const Layout = ({ children }) => {
