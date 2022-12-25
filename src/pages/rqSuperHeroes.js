@@ -2,22 +2,28 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 import Layout from '../layout'
 
+// step-3: make success request with valid url, and failed with invalid url
 const getSuperHeroes = async() => axios.get('http://localhost:5000/superheroes')
+// const getSuperHeroes = async() => axios.get('http://localhost:5000/superheroes1')
 	
-const RQSuperHeroesPage = () => { 			// 	(2)
-	const { isLoading, data, isError, error, refetch } = useQuery('superheroes-key', getSuperHeroes, {
-		enabled: false, 	// step-1. disable auto fetch on mount
+const RQSuperHeroesPage = () => { 
+
+	// step-1: Define onError and onSuccess handler
+	const onSuccess = (data) => console.log(data)
+	const onError = (error) => console.log(error)
+
+	const { isLoading, data, isError, error } = useQuery('superheroes-key', getSuperHeroes, {
+		// step-2: add onError and onSuccess handler
+		onSuccess,
+		onError
 	})
 
-
-	if(isLoading) return <p>Loading...</p>
-	if(isError) return <p>{error.message}</p>
+	if(isLoading) return <Layout> <p>Loading...</p> </Layout>
+	if(isError) return <Layout> <p>{error.message}</p> </Layout>
 
 	return (
 		<Layout>
 			<p>React Query Superheroes</p>
-			<button onClick={refetch}>Fetch Superheroes</button>
-							{/* (3) */}
 
 			<pre>
 				{JSON.stringify(data?.data, null, 2)}
