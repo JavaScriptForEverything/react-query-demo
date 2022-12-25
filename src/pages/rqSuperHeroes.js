@@ -4,13 +4,9 @@ import Layout from '../layout'
 
 const getSuperHeroes = async() => axios.get('http://localhost:5000/superheroes')
 	
-const RQSuperHeroesPage = () => {
-	const { isLoading, data, isError, error } = useQuery('superheroes-key', getSuperHeroes, {
-		// cacheTime: 1000 * 60 * 5, 		// Refetch after given time in background
-		// staleTime: 1000 * 30, 				// it prevent fetch immediately, face after 30 sec.
-		// refetchOnMount: true,
-		// refetchInterval: 2000
-
+const RQSuperHeroesPage = () => { 			// 	(2)
+	const { isLoading, data, isError, error, refetch } = useQuery('superheroes-key', getSuperHeroes, {
+		enabled: false, 	// step-1. disable auto fetch on mount
 	})
 
 
@@ -20,6 +16,8 @@ const RQSuperHeroesPage = () => {
 	return (
 		<Layout>
 			<p>React Query Superheroes</p>
+			<button onClick={refetch}>Fetch Superheroes</button>
+							{/* (3) */}
 
 			<pre>
 				{JSON.stringify(data?.data, null, 2)}
