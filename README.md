@@ -84,3 +84,44 @@ const onError = (error) => console.log(error)
 
 const { data } = useQuery('key', callback, { onSuccess, onError })
 ```
+
+##### Data Transformation: (filtering, sorting, maping,....)
+Sometime we need to transform or reformat data in our frontend code.
+so let's see how we can do that by `react-query`
+
+```
+import axios from 'axios'
+import { useQuery } from 'react-query'
+
+const getSuperHeroes = async() => axios.get('http://localhost:5000/superheroes')
+	
+const RQSuperHeroesPage = () => { 
+
+	// Step-2: Re-name the `data` variable, because it is now an array of names
+	const { data: superheroes } = useQuery('superheroes-key', getSuperHeroes, {
+
+		// Step-1: Re-map or re-format data object, returns array of users
+		select: (data) => {
+			const superheroes = data?.data.map(superhero => superhero.name)
+			return superheroes
+		}
+	})
+
+	return (
+		<Layout>
+			<p>React Query Superheroes</p>
+
+			{/* Step-3: Read filtered/formated array  */}
+			<ul>
+				{superheroes.map(superhero => <li key={superhero}>{superhero}</li>)}
+			</ul>
+
+			<pre>
+				{JSON.stringify(superheroes, null, 2)}
+			</pre>
+		</Layout>
+	)
+}
+export default RQSuperHeroesPage
+
+```
