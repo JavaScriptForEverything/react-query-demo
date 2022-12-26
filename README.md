@@ -342,3 +342,28 @@ export const useSuperhero = (heroId) => {
 	return useQuery(['hero-details', heroId], getHeroById)
 }
 ```
+
+
+
+##### Parallel Queries
+If we need multiple requests, then do the same way
+
+###### /pages/parallelQuery.js
+```
+const getSuperheroes = () => {
+	return axios.get('http://localhost:5000/superheroes')
+}
+const getFriends = () => {
+	return axios.get('http://localhost:5000/friends')
+}
+
+const { data: superheroes} = useQuery('super-heroes' , getSuperheroes)
+const { data: friends } = useQuery('friends' , getFriends)
+
+<pre>
+	{JSON.stringify(superheroes?.data, null, 2)}
+</pre>
+<pre>
+	{JSON.stringify(friends?.data, null, 2)}
+</pre>
+```
