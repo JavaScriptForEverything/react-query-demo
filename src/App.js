@@ -11,7 +11,7 @@ const App = () => {
 				<Route path='/superheroes' element={<Superheroes />} />
 				<Route path='/rq-superheroes' element={<RQSuperheroes />} />
 				<Route path='/rq-superheroes/:heroId' element={<RQSuperhero />} />
-				<Route path='/parallel-query' element={<ParallelQuery userId='vishwas@example.com' />} />
+				<Route path='/parallel-query' element={<ParallelQuery heroIds={[1, 3]}/>} />
 			</Routes>
 		</>
 	)

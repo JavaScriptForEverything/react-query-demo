@@ -367,3 +367,63 @@ const { data: friends } = useQuery('friends' , getFriends)
 	{JSON.stringify(friends?.data, null, 2)}
 </pre>
 ```
+
+##### Parallel Queries Dynamically
+Suppose we we have a list of heroes IDs, which is an array, and we don't know how many
+IDs will be inside that array. How do we query for array. We can use loop, right ?
+
+But the problems is that `useQuery` is a hooks, and hooks can't be nested inside any
+block, but here to use hooks we violate the roles of hooks. Which is not allowed.
+
+How do we solve this problems ?
+	- To solve this problems `useQueries` hooks comes into picture.
+
+```
+const heroes = useQueries(heroIds.map(heroId => ({
+	queryKey: [ 'superhero', heroId ],
+	queryFn: getHeroById
+})))
+
+const getHeroById = ({ queryKey }) => {
+	const heroId = queryKey[1] 	// comes from 2nd argument of the `queryKey`
+	return axios.get(`http://localhost:5000/superheroes/${heroId}`)
+}
+```
+
+
+###### Example: /pages/parallelQuery.js
+```
+import axios from 'axios'
+import { useQueries } from 'react-query'
+
+const getSuperheroById = ({ queryKey }) => {
+	const heroId = queryKey[1]
+	return axios.get(`http://localhost:5000/superheroes/${heroId}`)
+}
+
+export const ParallelQuery = ({ heroIds }) => {
+	const superheroes = useQueries( heroIds.map(id => ({ 
+		queryKey: ['superheroes', id],
+		queryFn: getSuperheroById
+	})))
+
+	return (
+		<>
+			<h2>Parallel Query</h2>
+
+			<pre>
+				{JSON.stringify(superheroes[0].data?.data, null, 2)}
+			</pre>
+
+			<pre>
+				{JSON.stringify(superheroes[1].data?.data, null, 2)}
+			</pre>
+
+			<pre>
+				{superheroes.map(hero => JSON.stringify(hero.data?.data, null, 2) )}
+			</pre>
+		</>
+	)
+}
+
+```
