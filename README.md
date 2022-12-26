@@ -489,3 +489,42 @@ export const DependentQuery = ({ userId }) => {
 	)
 }
 ```
+
+##### Show InitialData instead of loading
+When we try to fetch data we have `isLoading` property to show loading while data fetching.
+But when we try to get complete data on `dynamic route`, like getHeroDetailsById, ... 	
+we already have total `superheroes` right ? 
+
+so in details page, instead of showing loading, we can show the data we fetched earlier, while 
+fetching details data, and when details data fetched that that data replace the old data.
+
+This way 'user seams that data shows immediately' but we knows that user sees the old data, instead
+of loading, and when loading complete the real data replace the UI in a blink, user may not notice
+at all. Let's see the code.	
+
+
+###### Example: /hooks/useSuperhero.js
+```
+import axios from 'axios'
+import { useQuery, useQueryClient } from 'react-query'
+
+const getHeroById = ({ queryKey }) => {
+	const heroId = queryKey[1] 	// because we pass as 2nd item in ['hero-detials', heroId ]
+	return axios.get(`http://localhost:5000/superheroes/${heroId}`)
+}
+
+export const useSuperhero = (heroId) => {
+	const client = useQueryClient() 	// access the const client = new QueryClient()
+
+	return useQuery(['hero-details', heroId], getHeroById, {
+		initialData: () => {
+			// same key used in getAllSuperheroes queryKey used
+			const hero = client.getQueryData('superheroes-key')?.data?.find(hero => hero.id === +heroId)
+
+			return hero 
+				? { data: hero } // return as property of data, because we used: data.data.hero.name
+				: undefined 	// undefined means fetch, instead to try to read from cache
+		}
+	})
+}
+```
