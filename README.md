@@ -528,3 +528,67 @@ export const useSuperhero = (heroId) => {
 	})
 }
 ```
+
+
+
+##### Pagination
+Pagination is has nothing especial, we just have to update page state in DOM. and when DOM change
+react-query automatically fetch new data.
+
+useQuery is a hook, so when state change page re-renders so useQuery hooks also invoked,
+that the reason pagination happends. here react-query has nothing special to do.
+
+But react-query add some features too for pagination:
+- When page re-render UI shows loading + make page blink, we can show previous page data while
+page loading, and update UI only page success, this way no blinking happends.
+
+	But we can still can shown loading by `isFetching` property.
+
+```
+const getColors = ({ queryKey }) => {
+	const page = queryKey[1]
+	return axios.get(`http://localhost:5000/colors?_limit=2&_page=${page}`)
+}
+const [ page, setPage ] = useState(1)
+const { isLoading, data: colors, isError, error, isFetching } = useQuery(['colors', page ], getColors, {
+	keepPreviousData: true
+})
+```
+
+
+###### Example: /page/paginated.js
+```
+import { useQuery } from 'react-query'
+import Layout from '../layout'
+import axios from 'axios'
+import { useState } from 'react'
+
+const getColors = ({ queryKey }) => {
+	const page = queryKey[1]
+	return axios.get(`http://localhost:5000/colors?_limit=2&_page=${page}`)
+}
+
+export const Paginated = () => {
+	const [ page, setPage ] = useState(1)
+	const { isLoading, data: colors, isError, error, isFetching } = useQuery(['colors', page ], getColors, {
+		keepPreviousData: true
+	})
+
+	if(isLoading) return <Layout> <p>Loading...</p> </Layout>
+	if(isError) return <Layout> <p>{error.message}</p> </Layout>
+
+	return (
+		<Layout>
+			<h2>Pagination: {isFetching && 'loading...'}</h2>
+
+				{colors?.data.map(hero => <h4 key={hero.id}>
+					{hero.id}. {hero.label}
+				</h4>)}
+
+			<button onClick={() => setPage(page - 1)}>Prev Page</button>
+			<button onClick={() => setPage(page + 1)}>Next Page</button>
+		</Layout>
+	)
+}
+
+```

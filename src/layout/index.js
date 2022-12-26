@@ -4,8 +4,9 @@ const pages = [
 	{ path: '/', label: 'Home' },
 	{ path: '/superheroes', label: 'Superheroes' },
 	{ path: '/rq-superheroes', label: 'RQSuperheroes' },
-	{ path: `/parallel-query`, label: 'ParallelQuery' },
-	{ path: `/dependent-query`, label: 'DependentQuery' },
+	{ path: '/parallel-query', label: 'ParallelQuery' },
+	{ path: '/dependent-query', label: 'DependentQuery' },
+	{ path: '/paginated', label: 'Paginated' },
 ]
 
 const Layout = ({ children }) => {
