@@ -425,5 +425,67 @@ export const ParallelQuery = ({ heroIds }) => {
 		</>
 	)
 }
+```
 
+
+
+##### Dependent Parallel Queries 
+Here we need 2 quires, 2nd one depends on 1st one.
+Here happends 2 things:
+	1. Query are promised so we can't be sure which one resolve first
+	2. Promise take some times to resolve.
+
+So our 2nd query must be called when 1st query resolved and wait until promise fullfilled
+
+```
+// Step-1: called immediately
+const { data: user } = useQuery(['user-query', userId], getUserById)
+
+// Step-2: value will be null at first time then after fullfilled get value
+const channelId = user?.data.channelId
+
+const { data: channel } = useQuery(['channel', channelId], getChannelById, {
+	// Step-3: only call query when channelId available
+	enabled: !!channelId 	
+})
+```
+
+
+###### Example: /pages/dependentQuery.js
+```
+import axios from 'axios'
+import { useQuery } from 'react-query'
+import Layout from '../layout'
+
+const getUserById = ({ queryKey }) => {
+	const userId = queryKey[1]
+	return axios.get(`http://localhost:5000/users/${userId}`)
+}
+const getChannelById = ({ queryKey }) => {
+	const channelId = queryKey[1]
+	return axios.get(`http://localhost:5000/channels/${channelId}`)
+}
+
+export const DependentQuery = ({ userId }) => {
+	const { data: user } = useQuery(['user-query', userId], getUserById)
+	const channelId = user?.data.channelId
+
+	const { data: channel } = useQuery(['channel', channelId], getChannelById, {
+		enabled: !!channelId 	// only call query when channelId available
+	})
+
+	return (
+		<Layout>
+			<h2>Dependent Query</h2>
+
+			<pre>
+				{JSON.stringify(user?.data, null, 2)}
+			</pre>
+			<pre>
+				{JSON.stringify(channel?.data, null, 2)}
+			</pre>
+			
+		</Layout>
+	)
+}
 ```

@@ -5,6 +5,7 @@ const pages = [
 	{ path: '/superheroes', label: 'Superheroes' },
 	{ path: '/rq-superheroes', label: 'RQSuperheroes' },
 	{ path: `/parallel-query`, label: 'ParallelQuery' },
+	{ path: `/dependent-query`, label: 'DependentQuery' },
 ]
 
 const Layout = ({ children }) => {
@@ -17,6 +18,7 @@ const Layout = ({ children }) => {
 				padding:'8px 0',
 				display: 'flex',
 				justifyContent: 'center',
+				flexWrap: 'wrap',
 				gap: 16,
 				backgroundColor: 'dodgerblue',
 			}}>
