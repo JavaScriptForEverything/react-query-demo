@@ -7,6 +7,7 @@ const pages = [
 	{ path: '/parallel-query', label: 'ParallelQuery' },
 	{ path: '/dependent-query', label: 'DependentQuery' },
 	{ path: '/paginated', label: 'Paginated' },
+	{ path: '/infinite-query', label: 'InfiniteQuery' },
 ]
 
 const Layout = ({ children }) => {

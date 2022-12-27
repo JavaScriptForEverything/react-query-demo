@@ -1,6 +1,15 @@
 import { Route, Routes } from 'react-router-dom'
 
-import { Home, Superheroes, RQSuperheroes, RQSuperhero, ParallelQuery, DependentQuery, Paginated } from './pages'
+import { 
+	Home, 
+	Superheroes, 
+	RQSuperheroes, 
+	RQSuperhero, 
+	ParallelQuery, 
+	DependentQuery, 
+	Paginated, 
+	InfiniteQuery 
+} from './pages'
 
 const App = () => {
 
@@ -14,6 +23,7 @@ const App = () => {
 				<Route path='/parallel-query' element={<ParallelQuery heroIds={[1, 3]} />} />
 				<Route path='/dependent-query' element={<DependentQuery userId='vishwas@example.com' />} />
 				<Route path='/paginated' element={<Paginated />} />
+				<Route path='/infinite-query' element={<InfiniteQuery />} />
 			</Routes>
 		</>
 	)
