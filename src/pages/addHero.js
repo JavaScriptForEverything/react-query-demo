@@ -17,20 +17,11 @@ export const AddHero = () => {
 		enabled: false 															//		(1)
 	})
 	const { mutate: addHero } = useMutation(addSuperhero, {
-		onSuccess: ( data ) => {
-			// // method-1: for some reason it not working here, but we can do the same by 2nd method
-			// queryClient.invalidateQueries('superheroes') //=> (2)
-
-			// // method-alternative: get `{ refetch } = useQuery(...)`
-			// refetch() 	
-
-			// method-2: instead of refatching with extra Request, just update the cache, with current data
-			queryClient.setQueryData('superheroes', (oldQueryData) => {
-				return { 					//=> 		(2)
+		onSuccess: ( data ) => {  // 	(2)
+			queryClient.setQueryData('superheroes', (oldQueryData) => ({
 					...oldQueryData,
 					data: [ ...oldQueryData.data, data.data]
-				}
-			}) 		
+			})) 		
 		}
 	})
 
