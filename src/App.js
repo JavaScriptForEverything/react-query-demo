@@ -8,7 +8,8 @@ import {
 	ParallelQuery, 
 	DependentQuery, 
 	Paginated, 
-	InfiniteQuery 
+	InfiniteQuery, 
+	AddHero
 } from './pages'
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
 				<Route path='/dependent-query' element={<DependentQuery userId='vishwas@example.com' />} />
 				<Route path='/paginated' element={<Paginated />} />
 				<Route path='/infinite-query' element={<InfiniteQuery />} />
+				<Route path='/add-hero' element={<AddHero />} />
 			</Routes>
 		</>
 	)
