@@ -555,7 +555,6 @@ const { isLoading, data: colors, isError, error, isFetching } = useQuery(['color
 })
 ```
 
-
 ###### Example: /page/paginated.js
 ```
 import { useQuery } from 'react-query'
@@ -593,9 +592,94 @@ export const Paginated = () => {
 ```
 
 
+##### Infinite Query
+We can create infine scroll by `useInfiniteQuery` hooks.
+
+Infinite Scroll works the same way, the pagination works, we just have to increase the `_page`
+value, and `react-query` will do rest for us.
+
+```
+const getColors = ({ pageParam = 1 }) => {
+	return axios.get(`http://localhost:5000/colors?_limit=2&_page=${pageParam}`)
+}
+
+const { isLoading, isError, error, data, hasNextPage, fetchNextPage } = useInfiniteQuery(
+	'colors', getColors, {
+		getNextPageParam: (_lastPage, allPages) => {
+			const totalPage = 4 
+			return allPages.length < totalPage ? allPages.length + 1 : undefined
+			// Note: return undefined, not false, to make hasNextPage false
+		},
+})
+```
+
+. requrn value from `getNextPageParam` will be asigned to { pageParam } in the callback argument
+. if return anything than `undefined`, property `hasNextPage` will be truthy else falsy
+
+
+###### Example: /page/infiniteQuery.js
+```
+import { useEffect } from 'react'
+import { useInfiniteQuery } from 'react-query'
+import axios from 'axios'
+
+import Layout from '../layout'
+
+const getColors = ({ pageParam = 1 }) => {
+	return axios.get(`http://localhost:5000/colors?_limit=2&_page=${pageParam}`)
+}
+
+export const InfiniteQuery = () => {
+
+	const { isLoading, isError, error, data, hasNextPage, fetchNextPage } = useInfiniteQuery('colors', getColors, {
+		getNextPageParam: (_lastPage, allPages) => {
+			const totalPage = 4 
+			return allPages.length < totalPage ? allPages.length + 1 : undefined
+			// Note: return undefined, not false, to make hasNextPage false
+		},
+	})
+
+
+	useEffect(() => {
+		const scrollHandler = async (evt) => {
+			const { scrollHeight, scrollTop, clientHeight } = evt.target.scrollingElement
+
+			if(scrollHeight - scrollTop <= clientHeight ) {
+				console.log('fetch')
+				await fetchNextPage()
+			}
+		}
+		document.addEventListener('scroll', scrollHandler)
+		return () => document.removeEventListener('scroll', scrollHandler)
+	}, [fetchNextPage])
+
+
+	if(isLoading) return <Layout>loading ...</Layout>
+	if(isError) return <Layout>{error.message}</Layout>
+
+	return (
+		<Layout>
+			<h2>Infinite Query </h2>
+
+			{data?.pages.map((group, index) => (
+				<div key={index}>
+					{group?.data?.map(color => (
+						<p key={color.id}>{color.id}. {color.label}</p>
+					))}
+				</div>
+			))}
+
+			<button disabled={!hasNextPage} onClick={fetchNextPage}>Load more</button>
+		</Layout>
+	)
+}
+```
+
+
+
+
+
 ##### Mutation
-
-
 ```
 const addSuperhero = (data) => {
 	return axios.post('http://localhost:5000/superheroes', data)
